@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'com.netflix.nebula', name: 'nebula-dependency-recommender', version: '4.2.0'
+        classpath group: 'com.netflix.nebula', name: 'nebula-publishing-plugin', version: '4.2.0'
+        classpath group: 'org.starchartlabs.flare', name: 'flare-operations-plugins', version: '0.2.0'
+        classpath group: 'org.starchartlabs.flare', name: 'flare-publishing-plugins', version: '0.2.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'nebula.dependency-recommender'
+apply plugin: 'nebula.maven-resolved-dependencies'
+apply plugin: 'nebula.maven-base-publish'
+apply plugin: 'nebula.maven-dependencies'
+apply plugin: 'org.starchartlabs.flare.dependency-insight'
+apply plugin: 'org.starchartlabs.flare.increase-test-logging'
+apply plugin: 'org.starchartlabs.flare.source-jars'
+
+dependencyRecommendations {
+    propertiesFile file: file("${rootDir}/dependencies.properties")
+}
+
+group = 'org.starchartlabs.lure'
+
+sourceCompatibility = "${javaVersion}"
+
+//Always download sources, to allow debugging, and use Eclipse containers for greater portability
+eclipse {
+    classpath {
+        downloadSources=true
+        containers = [
+            "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${sourceCompatibility}".toString()
+        ]
+    }
+}
+
+repositories { mavenCentral() }
+
+//Setup default test behavior, including failure logging
+test {
+    useTestNG() { useDefaultListeners = true }
+}
+
+//Apply module naming to all projects
+//Add LICENSE so it is included in all JARs, as well as dependent licenses, fulfilling the "distributions include license" requirement
+jar {
+    from("${rootDir}"){ include 'LICENSE' }
+}
+
+//All projects should provide source code and javadoc, and upload these with any released artifacts
+sourcesJar {
+    from("${rootDir}"){ include 'LICENSE' }
+}
+
+javadocJar{
+    from("${rootDir}"){ include 'LICENSE' }
+}
