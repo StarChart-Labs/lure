@@ -1,5 +1,7 @@
 # Lure
 
+[![Travis CI](https://img.shields.io/travis/com/StarChart-Labs/lure.svg?branch=master)](https://travis-ci.com/StarChart-Labs/lure) [![Changelog validated by Chronicler](https://chronicler.starchartlabs.org/images/changelog-chronicler-success.png)](https://chronicler.starchartlabs.org/)
+
 Command line utility for generating mock GitHub webhook test messages
 
 ## Contributing
