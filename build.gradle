@@ -4,12 +4,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath group: 'com.netflix.nebula', name: 'nebula-dependency-recommender', version: '4.2.0'
-        classpath group: 'com.netflix.nebula', name: 'nebula-publishing-plugin', version: '4.2.0'
-        classpath group: 'org.starchartlabs.flare', name: 'flare-operations-plugins', version: '0.2.0'
-        classpath group: 'org.starchartlabs.flare', name: 'flare-publishing-plugins', version: '0.2.0'
+        classpath 'com.netflix.nebula:nebula-dependency-recommender:4.2.0'
+        classpath 'com.netflix.nebula:nebula-publishing-plugin:4.2.0'
+        classpath 'org.starchartlabs.flare:flare-operations-plugins:0.2.0'
+        classpath 'org.starchartlabs.flare:flare-publishing-plugins:0.2.0'
+        classpath 'us.kirchmeier:gradle-capsule-plugin:1.0.2'
     }
-}
+} 
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -21,6 +22,9 @@ apply plugin: 'nebula.maven-dependencies'
 apply plugin: 'org.starchartlabs.flare.dependency-insight'
 apply plugin: 'org.starchartlabs.flare.increase-test-logging'
 apply plugin: 'org.starchartlabs.flare.source-jars'
+apply plugin: 'us.kirchmeier.capsule'
+
+description = 'Command line interface for managing encrypted credential files'
 
 dependencyRecommendations {
     propertiesFile file: file("${rootDir}/dependencies.properties")
@@ -40,7 +44,25 @@ eclipse {
     }
 }
 
+//Need to exclude the real logger from test runs, so use a special configuration to side-step its inclusion in test runs
+configurations {
+    capsuleRuntime{
+        extendsFrom runtime
+    }
+}
+
 repositories { mavenCentral() }
+
+dependencies {
+    compileOnly 'com.google.code.findbugs:jsr305'
+    
+    compile 'args4j:args4j'
+    compile 'com.squareup.okhttp3:okhttp'
+    compile 'commons-codec:commons-codec'
+    compile 'org.slf4j:slf4j-api'
+    
+    capsuleRuntime 'org.slf4j:slf4j-simple'
+}
 
 //Setup default test behavior, including failure logging
 test {
@@ -60,4 +82,15 @@ sourcesJar {
 
 javadocJar{
     from("${rootDir}"){ include 'LICENSE' }
+}
+
+task distCapsule(type: FatCapsule) {
+    applicationClass 'org.starchartlabs.lure.CommandLineInterface'
+    embedConfiguration configurations.capsuleRuntime
+}
+
+tasks.assemble.dependsOn distCapsule
+
+artifacts {
+    archives distCapsule
 }
