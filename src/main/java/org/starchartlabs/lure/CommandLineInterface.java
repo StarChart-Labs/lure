@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.starchartlabs.lure.command.PushCommand;
 
-//TODO romeara test
 /**
  * Main entry point for command line calls to the application
  *
