@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.1.1]
 ### Changed
 - GH-1: Fixed malformed signature (security) header generated as part of webhook requests using a secret by the `push` command
 
