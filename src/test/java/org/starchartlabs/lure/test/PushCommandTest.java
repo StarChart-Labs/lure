@@ -89,7 +89,7 @@ public class PushCommandTest {
     @Test
     public void pushWithSecret() throws Exception {
         TestLogger testLogger = TestLoggerFactory.getTestLogger(PushCommand.class);
-        String expectedSignature = "24510be1a28ed09a521e5929842ca47ebc05b414";
+        String expectedSignature = "sha1=24510be1a28ed09a521e5929842ca47ebc05b414";
 
         String eventName = "test-event";
         String contentPath = getClass().getClassLoader().getResource(BASIC_JSON_PAYLOAD.toString()).toURI()
