@@ -72,7 +72,7 @@ public class PushCommand implements Runnable {
 
     @Nullable
     @Option(name = "-s", aliases = { "--secret" }, required = false,
-    usage = "Specifies the webhook secret to secure the event post with")
+            usage = "Specifies the webhook secret to secure the event post with")
     private String webhookSecret;
 
     @Option(name = "-c", aliases = { "--content" }, required = true,
@@ -129,7 +129,7 @@ public class PushCommand implements Runnable {
         if (webhookSecret != null) {
             HmacUtils hmacUtils = new HmacUtils(HmacAlgorithms.HMAC_SHA_1, webhookSecret);
 
-            result = hmacUtils.hmacHex(payload);
+            result = "sha1=" + hmacUtils.hmacHex(payload);
         }
 
         return Optional.ofNullable(result);
