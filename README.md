@@ -31,15 +31,17 @@ If you discover a security vulnerability, contact the development team by e-mail
 
 *Lure is still in initial development*
 
-To use, it is currently required to clone this repository, build via `./gradlew clean build`, and then navigate to the `./build/libs` folder. Form that location, the application may be run via `java -jar lure-0.1.0-SNAPSHOT-capsule.jar`, followed by the desired command.
+To use, download the latest release from the [releases page](https://github.com/StarChart-Labs/lure/releases). From the download location, application may be run via `java -jar lure-(version)-capsule.jar`, followed by the desired command.
 
-Once initial releases are made, Lure will be a command-line interface for sending webhooks payloads on a local system. With the current support, it is recommended to use something like Request Bin to capture real webhook payloads, and then utilize lure to send them to your environment for testing (in situations where direct calls cannot be made)
+Lure is be a command-line interface for sending webhooks payloads on a local system. With the current support, it is recommended to use something like Request Bin to capture real webhook payloads, and then utilize lure to send them to your environment for testing (in situations where direct calls cannot be made)
 The current in-development code base supports:
 
 - `push`: Pushes a provided payload to an indicated web URL, mimicing the GitHub webook call pattern
   - `--target-url`: "Specifies the server URL to POST the event to. Required
   - `--event-name`: "Specifies the GitHub event name to send as. Required
   - `--secret`: Specifies the webhook secret to secure the event post with
-  - `--content`: Specifies the file containing the event content to send. Required
+  - `--content`: Specifies the file containing the event content to send. Require
+  
+Example: `java -jar lure-(version)-capsule.jar push --target-url http://localhost/webhook --secret totallySecure --event-name event --content ./content.json`
 
  
