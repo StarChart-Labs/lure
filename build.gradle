@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.netflix.nebula:nebula-dependency-recommender:4.2.0'
         classpath 'com.netflix.nebula:nebula-publishing-plugin:4.2.0'
-        classpath 'org.starchartlabs.flare:flare-operations-plugins:0.2.0'
+        classpath 'org.starchartlabs.flare:flare-operations-plugins:1.0.0'
         classpath 'org.starchartlabs.flare:flare-publishing-plugins:0.2.0'
         classpath 'us.kirchmeier:gradle-capsule-plugin:1.0.2'
     }
