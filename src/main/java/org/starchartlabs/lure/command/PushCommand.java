@@ -43,6 +43,7 @@ import okhttp3.Response;
  * Command line sub-command that will push raw data to a web URL following patterns defined for GitHub webhook calls
  *
  * @author romeara
+ * @since 0.1.0
  */
 public class PushCommand implements Runnable {
 
@@ -72,7 +73,7 @@ public class PushCommand implements Runnable {
 
     @Nullable
     @Option(name = "-s", aliases = { "--secret" }, required = false,
-            usage = "Specifies the webhook secret to secure the event post with")
+    usage = "Specifies the webhook secret to secure the event post with")
     private String webhookSecret;
 
     @Option(name = "-c", aliases = { "--content" }, required = true,

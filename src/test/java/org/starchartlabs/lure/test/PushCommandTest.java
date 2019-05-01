@@ -36,8 +36,6 @@ import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 public class PushCommandTest {
 
-    private static final String COMMAND = "push";
-
     private static final Path TEST_PAYLOADS_DIRECTORY = Paths.get("org/starchartlabs/lure/test/payloads");
 
     private static final Path BASIC_JSON_PAYLOAD = TEST_PAYLOADS_DIRECTORY.resolve("basicJson.json");
@@ -59,7 +57,7 @@ public class PushCommandTest {
 
             String url = server.url("/webhook").toString();
 
-            String[] args = new String[] { COMMAND, "--target-url=" + url, "--event-name=" + eventName,
+            String[] args = new String[] { PushCommand.COMMAND_NAME, "--target-url=" + url, "--event-name=" + eventName,
                     "--content=" + contentPath };
 
             try {
@@ -104,7 +102,7 @@ public class PushCommandTest {
 
             String url = server.url("/webhook").toString();
 
-            String[] args = new String[] { COMMAND, "--target-url=" + url, "--event-name=" + eventName,
+            String[] args = new String[] { PushCommand.COMMAND_NAME, "--target-url=" + url, "--event-name=" + eventName,
                     "--secret=12345", "--content=" + contentPath };
 
             try {

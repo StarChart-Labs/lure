@@ -29,6 +29,7 @@ import org.kohsuke.args4j.spi.SubCommandHandler;
 import org.kohsuke.args4j.spi.SubCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.starchartlabs.lure.command.PostbinCommand;
 import org.starchartlabs.lure.command.PushCommand;
 
 /**
@@ -44,7 +45,8 @@ public class CommandLineInterface {
 
     @Argument(handler = SubCommandHandler.class)
     @SubCommands({
-        @SubCommand(name = PushCommand.COMMAND_NAME, impl = PushCommand.class)
+            @SubCommand(name = PushCommand.COMMAND_NAME, impl = PushCommand.class),
+            @SubCommand(name = PostbinCommand.COMMAND_NAME, impl = PostbinCommand.class),
     })
     private Runnable command;
 

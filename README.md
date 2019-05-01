@@ -37,11 +37,19 @@ Lure is be a command-line interface for sending webhooks payloads on a local sys
 The current in-development code base supports:
 
 - `push`: Pushes a provided payload to an indicated web URL, mimicing the GitHub webook call pattern
-  - `--target-url`: "Specifies the server URL to POST the event to. Required
-  - `--event-name`: "Specifies the GitHub event name to send as. Required
+  - `--target-url`: Specifies the server URL to POST the event to. Required
+  - `--event-name`: Specifies the GitHub event name to send as. Required
   - `--secret`: Specifies the webhook secret to secure the event post with
-  - `--content`: Specifies the file containing the event content to send. Require
+  - `--content`: Specifies the file containing the event content to send. Required
   
 Example: `java -jar lure-(version)-capsule.jar push --target-url http://localhost/webhook --secret totallySecure --event-name event --content ./content.json`
+
+- `postbin`: Pipes a payloads from postb.in to an indicated web URL, mimicing the GitHub webook call pattern
+  - `--target-url`: Specifies the server URL to POST the event to. Required
+  - `--bin-id`: Specifies the Postbin bin ID to poll. Required
+  - `--poll-frequency`: Specifies the frequency in seconds to poll Postbin for new requests at, must be greater than 0. Defaults to 10 seconds
+  - `--postbin-root-url`: Specifies the root URL of Postbin to use. Defaults to https://postb.in/api
+  
+Example: `java -jar lure-(version)-capsule.jar postbin --target-url http://localhost/webhook --bin-id abcdefg`
 
  
