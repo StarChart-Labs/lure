@@ -57,9 +57,11 @@ dependencies {
     compileOnly 'com.google.code.findbugs:jsr305'
     
     compile 'args4j:args4j'
+    compile 'com.google.code.gson:gson'
     compile 'com.squareup.okhttp3:okhttp'
     compile 'commons-codec:commons-codec'
     compile 'org.slf4j:slf4j-api'
+    compile 'org.starchartlabs.alloy:alloy-core'
     
     capsuleRuntime 'org.slf4j:slf4j-simple'
     
