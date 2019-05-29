@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
@@ -45,8 +46,8 @@ public class CommandLineInterface {
 
     @Argument(handler = SubCommandHandler.class)
     @SubCommands({
-            @SubCommand(name = PushCommand.COMMAND_NAME, impl = PushCommand.class),
-            @SubCommand(name = PostbinCommand.COMMAND_NAME, impl = PostbinCommand.class),
+        @SubCommand(name = PushCommand.COMMAND_NAME, impl = PushCommand.class),
+        @SubCommand(name = PostbinCommand.COMMAND_NAME, impl = PostbinCommand.class),
     })
     private Runnable command;
 
@@ -78,16 +79,20 @@ public class CommandLineInterface {
 
         StringWriter usageWriter = new StringWriter();
 
+        // Print sub-command usages
+        Map<String, Object> subCommands = new HashMap<>();
+        subCommands.put(PushCommand.COMMAND_NAME, new PushCommand());
+        subCommands.put(PostbinCommand.COMMAND_NAME, new PostbinCommand());
+
+        String subCommandsList = subCommands.keySet().stream()
+                .collect(Collectors.joining(" | "));
+
         usageWriter
-        .append("java " + getClass().getSimpleName() + " (generate | addkey | list) [options...] arguments...");
+                .append("java " + getClass().getSimpleName() + " (" + subCommandsList + ") [options...] arguments...");
         usageWriter.append('\n');
         usageWriter.append('\n');
 
         parser.printUsage(usageWriter, null);
-
-        // Print sub-command usages
-        Map<String, Object> subCommands = new HashMap<>();
-        subCommands.put(PushCommand.COMMAND_NAME, new PushCommand());
 
         for (Entry<String, Object> subCommand : subCommands.entrySet()) {
             usageWriter.append(subCommand.getKey());

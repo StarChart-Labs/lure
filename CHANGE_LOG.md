@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added "postbin" command which allows piping payloads from Postb.in to a URL in the same manner as GitHub webhooks
 
+### Changed
+- GH-4: Fixed incorrect usage documentation of commands
+
 ## [0.1.1]
 ### Changed
 - GH-1: Fixed malformed signature (security) header generated as part of webhook requests using a secret by the `push` command
