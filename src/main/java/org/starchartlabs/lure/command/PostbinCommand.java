@@ -23,9 +23,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.starchartlabs.lure.model.postbin.PostbinCreateResponse;
 import org.starchartlabs.lure.model.postbin.PostbinShiftResponse;
 import org.starchartlabs.lure.model.postbin.RecordedRequest;
 
@@ -35,6 +38,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Command line sub-command that will pull requests from PostBin and push it to a web URL following patterns defined for
@@ -46,6 +50,8 @@ import okhttp3.Response;
 public class PostbinCommand implements Runnable {
 
     public static final String COMMAND_NAME = "postbin";
+
+    private static final String USER_AGENT = "StarChart-Labs/lure";
 
     private static final Set<String> PASSED_HEADERS = Stream
             .of("X-GitHub-Event", "X-GitHub-Delivery", "X-Hub-Signature", "User-Agent")
@@ -61,8 +67,8 @@ public class PostbinCommand implements Runnable {
             usage = "Specifies the server URL to POST the event to. Required")
     private String targetUrl;
 
-    @Option(name = "-b", aliases = { "--bin-id" }, required = true,
-            usage = "Specifies the Postbin bin ID to poll. Required")
+    @Option(name = "-b", aliases = { "--bin-id" }, required = false,
+            usage = "Specifies the Postbin bin ID to poll. If unspecified, a new bin is created")
     private String binId;
 
     @Option(name = "-p", aliases = { "--poll-frequency" }, required = false,
@@ -78,7 +84,9 @@ public class PostbinCommand implements Runnable {
         logger.info("Polling PostBin requests");
         long millisecondsWait = TimeUnit.MILLISECONDS.convert(pollFrequencySeconds, TimeUnit.SECONDS);
         PostbinShiftResponse currentResponse = null;
-        String sourceUrl = getShiftRequestUrl(binId);
+
+        String effectiveBiId = getBinId(binId);
+        String sourceUrl = getShiftRequestUrl(effectiveBiId);
 
         logger.info("Reading requests from {}", sourceUrl);
 
@@ -107,6 +115,38 @@ public class PostbinCommand implements Runnable {
         logger.info("Polling complete, Bin is no longer active");
     }
 
+    private String getBinId(@Nullable String providedBinId) {
+        String result = providedBinId;
+
+        if (providedBinId == null) {
+            HttpUrl url = HttpUrl.get(rootUrl).newBuilder()
+                    .addPathSegment("bin")
+                    .build();
+
+            Request request = new Request.Builder()
+                    .header("User-Agent", USER_AGENT)
+                    .post(RequestBody.create(null, new byte[] {}))
+                    .url(url)
+                    .build();
+
+            try (Response response = httpClient.newCall(request).execute()) {
+                try (ResponseBody body = response.body()) {
+                    PostbinCreateResponse postbinResponse = PostbinCreateResponse.fromJson(body.string());
+
+                    logger.info(
+                            "Created bin viewable at https://postb.in/b/{} for routing - configure webhooks to POST to https://postb.in/{}",
+                            postbinResponse.getBinId(), postbinResponse.getBinId());
+
+                    return postbinResponse.getBinId();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error requesting data from PostBin", e);
+            }
+        }
+
+        return result;
+    }
+
     private String getShiftRequestUrl(String binId) {
         Objects.requireNonNull(binId);
 
@@ -124,7 +164,7 @@ public class PostbinCommand implements Runnable {
         Request request = new Request.Builder()
                 .get()
                 .header("Accept", "application/json")
-                .header("User-Agent", "StarChart-Labs/lure")
+                .header("User-Agent", USER_AGENT)
                 .url(url)
                 .build();
 

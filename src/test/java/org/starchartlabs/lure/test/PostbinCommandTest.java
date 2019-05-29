@@ -52,6 +52,8 @@ public class PostbinCommandTest {
 
     private static final Path BIN_EXPIRED_PAYLOAD = TEST_PAYLOADS_DIRECTORY.resolve("notFoundBinDoesntExist.json");
 
+    private static final Path CREATE_BIN_PAYLOAD = TEST_PAYLOADS_DIRECTORY.resolve("createBin.json");
+
     @Test
     public void postbinFilteredByGet() throws Exception {
         TestLogger testLogger = TestLoggerFactory.getTestLogger(PostbinCommand.class);
@@ -137,6 +139,79 @@ public class PostbinCommandTest {
             } finally {
                 Assert.assertEquals(server.getRequestCount(), 3);
                 RecordedRequest request = server.takeRequest(1, TimeUnit.SECONDS);
+
+                Assert.assertEquals(request.getMethod(), "GET");
+                Assert.assertEquals(request.getHeader("Accept"), "application/json");
+                Assert.assertEquals(request.getHeader("User-Agent"), "StarChart-Labs/lure");
+                Assert.assertEquals(request.getPath(), "/api/bin/" + binId + "/req/shift");
+
+                request = server.takeRequest(1, TimeUnit.SECONDS);
+
+                Assert.assertEquals(request.getMethod(), "POST");
+                Assert.assertEquals(request.getHeader("Content-Type"), "application/json; charset=utf-8");
+                Assert.assertEquals(request.getHeader("User-Agent"), "curl/7.35.0");
+                Assert.assertEquals(request.getPath(), "/webhook");
+                Assert.assertEquals(request.getBody().readUtf8(), "{\"name\":\"value\"}");
+
+                request = server.takeRequest(1, TimeUnit.SECONDS);
+
+                Assert.assertEquals(request.getMethod(), "GET");
+                Assert.assertEquals(request.getHeader("Accept"), "application/json");
+                Assert.assertEquals(request.getHeader("User-Agent"), "StarChart-Labs/lure");
+                Assert.assertEquals(request.getPath(), "/api/bin/" + binId + "/req/shift");
+
+                List<String> events = testLogger.getLoggingEvents().stream()
+                        .filter(event -> Level.INFO.equals(event.getLevel()))
+                        .map(LoggingEvent::getMessage)
+                        .collect(Collectors.toList());
+
+                Assert.assertTrue(events.contains("Successful POST of event to {} (HTTP: {}: {})"),
+                        "Found: " + events);
+            }
+        }
+    }
+
+    @Test
+    public void postbinCreateBin() throws Exception {
+        TestLogger testLogger = TestLoggerFactory.getTestLogger(PostbinCommand.class);
+
+        MockResponse createResponse = new MockResponse()
+                .setBody(getContent(CREATE_BIN_PAYLOAD))
+                .setResponseCode(200);
+        MockResponse response = new MockResponse()
+                .setBody(getContent(POST_PAYLOAD))
+                .setResponseCode(200);
+        MockResponse postResponse = new MockResponse()
+                .setResponseCode(200);
+        MockResponse responseBinComplete = new MockResponse()
+                .setBody(getContent(BIN_EXPIRED_PAYLOAD))
+                .setResponseCode(404);
+
+        try (MockWebServer server = new MockWebServer()) {
+            server.enqueue(createResponse);
+            server.enqueue(response);
+            server.enqueue(postResponse);
+            server.enqueue(responseBinComplete);
+            server.start();
+
+            HttpUrl rootUrl = server.url("/api");
+            String binId = "YS4il4gS";
+            String url = server.url("/webhook").toString();
+
+            String[] args = new String[] { PostbinCommand.COMMAND_NAME, "--target-url=" + url,
+                    "--postbin-root-url=" + rootUrl.toString(), "--poll-frequency=1" };
+
+            try {
+                CommandLineInterface.main(args);
+            } finally {
+                Assert.assertEquals(server.getRequestCount(), 4);
+                RecordedRequest request = server.takeRequest(1, TimeUnit.SECONDS);
+
+                Assert.assertEquals(request.getMethod(), "POST");
+                Assert.assertEquals(request.getHeader("User-Agent"), "StarChart-Labs/lure");
+                Assert.assertEquals(request.getPath(), "/api/bin");
+
+                request = server.takeRequest(1, TimeUnit.SECONDS);
 
                 Assert.assertEquals(request.getMethod(), "GET");
                 Assert.assertEquals(request.getHeader("Accept"), "application/json");
