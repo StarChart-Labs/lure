@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Added "postbin" command which allows piping payloads from Postb.in to a URL in the same manner as GitHub webhooks
+- Added support for automatic creation of PostBin if bin ID is omitted
 
 ## [0.1.1]
 ### Changed
