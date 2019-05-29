@@ -46,7 +46,7 @@ Example: `java -jar lure-(version)-capsule.jar push --target-url http://localhos
 
 - `postbin`: Pipes a payloads from postb.in to an indicated web URL, mimicing the GitHub webook call pattern
   - `--target-url`: Specifies the server URL to POST the event to. Required
-  - `--bin-id`: Specifies the Postbin bin ID to poll. Required
+  - `--bin-id`: Specifies the Postbin bin ID to poll. If unspecified, a new bin is created
   - `--poll-frequency`: Specifies the frequency in seconds to poll Postbin for new requests at, must be greater than 0. Defaults to 10 seconds
   - `--postbin-root-url`: Specifies the root URL of Postbin to use. Defaults to https://postb.in/api
   
