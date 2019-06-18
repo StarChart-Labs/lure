@@ -6,8 +6,8 @@ buildscript {
     dependencies {
         classpath 'com.netflix.nebula:nebula-dependency-recommender:4.2.0'
         classpath 'com.netflix.nebula:nebula-publishing-plugin:4.2.0'
-        classpath 'org.starchartlabs.flare:flare-operations-plugins:1.0.0'
-        classpath 'org.starchartlabs.flare:flare-publishing-plugins:0.2.0'
+        classpath 'org.starchartlabs.flare:flare-operations-plugins:1.1.0'
+        classpath 'org.starchartlabs.flare:flare-publishing-plugins:0.3.0'
         classpath 'us.kirchmeier:gradle-capsule-plugin:1.0.2'
     }
 } 
@@ -30,17 +30,10 @@ dependencyRecommendations {
     propertiesFile file: file("${rootDir}/dependencies.properties")
 }
 
-group = 'org.starchartlabs.lure'
-
-sourceCompatibility = "${javaVersion}"
-
 //Always download sources, to allow debugging, and use Eclipse containers for greater portability
 eclipse {
     classpath {
         downloadSources=true
-        containers = [
-            "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${sourceCompatibility}".toString()
-        ]
     }
 }
 
