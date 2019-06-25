@@ -6,8 +6,8 @@ buildscript {
     dependencies {
         classpath 'com.netflix.nebula:nebula-dependency-recommender:4.2.0'
         classpath 'com.netflix.nebula:nebula-publishing-plugin:4.2.0'
-        classpath 'org.starchartlabs.flare:flare-operations-plugins:1.1.0'
-        classpath 'org.starchartlabs.flare:flare-publishing-plugins:0.3.0'
+        classpath 'org.starchartlabs.flare:flare-operations-plugins:2.0.0'
+        classpath 'org.starchartlabs.flare:flare-publishing-plugins:1.0.0'
         classpath 'us.kirchmeier:gradle-capsule-plugin:1.0.2'
     }
 } 
@@ -19,7 +19,7 @@ apply plugin: 'nebula.dependency-recommender'
 apply plugin: 'nebula.maven-resolved-dependencies'
 apply plugin: 'nebula.maven-base-publish'
 apply plugin: 'nebula.maven-dependencies'
-apply plugin: 'org.starchartlabs.flare.dependency-insight'
+apply plugin: 'org.starchartlabs.flare.dependency-reporting'
 apply plugin: 'org.starchartlabs.flare.increase-test-logging'
 apply plugin: 'org.starchartlabs.flare.source-jars'
 apply plugin: 'us.kirchmeier.capsule'
