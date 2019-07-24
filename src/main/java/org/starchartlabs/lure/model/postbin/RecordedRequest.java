@@ -143,9 +143,6 @@ public class RecordedRequest {
      */
     private static final class Deserializer implements JsonDeserializer<RecordedRequest> {
 
-        private static final Gson GSON = new GsonBuilder()
-                .create();
-
         @Override
         public RecordedRequest deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                 throws JsonParseException {
@@ -157,7 +154,7 @@ public class RecordedRequest {
                     .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().getAsString()))
                     .collect(Collectors.toList());
 
-            String body = GSON.toJson(responseObject.get("body"));
+            String body = responseObject.get("body").toString();
 
             return new RecordedRequest(method, headers, body);
         }
