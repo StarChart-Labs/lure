@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.2.1]
 ### Changed
 - (GH-9) Fixed a bug where the request body sent did not match the one received by postbin, which was invalidating security checks based on a hash of the payload and some shared secret
 
