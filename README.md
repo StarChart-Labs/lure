@@ -1,6 +1,6 @@
 # Lure
 
-[![Travis CI](https://img.shields.io/travis/com/StarChart-Labs/lure.svg?branch=master)](https://travis-ci.com/StarChart-Labs/lure) [![Changelog validated by Chronicler](https://chronicler.starchartlabs.org/images/changelog-chronicler-success.png)](https://chronicler.starchartlabs.org/)
+![GitHub Actions](https://github.com/StarChart-Labs/lure/workflows/Java%20CI/badge.svg?branch=master) [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/StarChart-Labs/lure/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/StarChart-Labs/lure/branches/master) [![Changelog validated by Chronicler](https://chronicler.starchartlabs.org/images/changelog-chronicler-success.png)](https://chronicler.starchartlabs.org/)
 
 Command line utility for generating mock GitHub webhook test messages
 
