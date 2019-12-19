@@ -72,7 +72,7 @@ test {
 checkstyle {
     configFile = rootProject.file('config/checkstyle/checkstyle.xml')
     configProperties = [ 'checkstyle.config.dir' : rootProject.file('config/checkstyle') ]
-    toolVersion = '8.18'
+    toolVersion = '8.27'
 }
  
 task checkstyleAll{}
