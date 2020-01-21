@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Updated dependencies to latest bugfix release (gson, okhttp, commons-codec, slf4j, alloy)
 
 ## [0.2.1]
 ### Changed
