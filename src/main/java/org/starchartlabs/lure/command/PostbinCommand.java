@@ -50,7 +50,7 @@ import picocli.CommandLine.ParentCommand;
  * @since 0.2.0
  */
 @Command(
-        description = "Pipes a payloads from postb.in to an indicated web URL, mimicing the GitHub webook call pattern",
+        description = "Pipes a payloads from postb.in to an indicated web URL, mimicking the GitHub webook call pattern",
         name = PostbinCommand.COMMAND_NAME, mixinStandardHelpOptions = true)
 public class PostbinCommand implements Runnable {
 
