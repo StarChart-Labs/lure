@@ -48,7 +48,7 @@ import picocli.CommandLine.ParentCommand;
  * @since 0.1.0
  */
 @Command(
-        description = "Pushes a provided payload to an indicated web URL, mimicing the GitHub webook call pattern",
+        description = "Pushes a provided payload to an indicated web URL, mimicking the GitHub webook call pattern",
         name = PushCommand.COMMAND_NAME, mixinStandardHelpOptions = true)
 public class PushCommand implements Runnable {
 
