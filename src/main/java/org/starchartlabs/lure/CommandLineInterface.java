@@ -15,23 +15,9 @@
  */
 package org.starchartlabs.lure;
 
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import org.starchartlabs.lure.command.LureCommand;
 
-import org.kohsuke.args4j.Argument;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.spi.SubCommand;
-import org.kohsuke.args4j.spi.SubCommandHandler;
-import org.kohsuke.args4j.spi.SubCommands;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.starchartlabs.lure.command.PostbinCommand;
-import org.starchartlabs.lure.command.PushCommand;
+import picocli.CommandLine;
 
 /**
  * Main entry point for command line calls to the application
@@ -41,70 +27,8 @@ import org.starchartlabs.lure.command.PushCommand;
  */
 public class CommandLineInterface {
 
-    /** Logger reference to output information to the application log files */
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Argument(handler = SubCommandHandler.class)
-    @SubCommands({
-        @SubCommand(name = PushCommand.COMMAND_NAME, impl = PushCommand.class),
-        @SubCommand(name = PostbinCommand.COMMAND_NAME, impl = PostbinCommand.class),
-    })
-    private Runnable command;
-
-    public static void main(String[] args) {
-        new CommandLineInterface().run(args);
-    }
-
-    public void run(String[] args) {
-        CmdLineParser parser = new CmdLineParser(this);
-
-        try {
-            // parse the arguments.
-            parser.parseArgument(args);
-
-            if (command != null) {
-                command.run();
-            } else {
-                logger.error("Invalid command line arguments");
-                printUsage(parser);
-            }
-        } catch (CmdLineException e) {
-            logger.error("Invalid command line arguments", e);
-            printUsage(parser);
-        }
-    }
-
-    private void printUsage(CmdLineParser parser) {
-        Objects.requireNonNull(parser);
-
-        StringWriter usageWriter = new StringWriter();
-
-        // Print sub-command usages
-        Map<String, Object> subCommands = new HashMap<>();
-        subCommands.put(PushCommand.COMMAND_NAME, new PushCommand());
-        subCommands.put(PostbinCommand.COMMAND_NAME, new PostbinCommand());
-
-        String subCommandsList = subCommands.keySet().stream()
-                .collect(Collectors.joining(" | "));
-
-        usageWriter
-                .append("java " + getClass().getSimpleName() + " (" + subCommandsList + ") [options...] arguments...");
-        usageWriter.append('\n');
-        usageWriter.append('\n');
-
-        parser.printUsage(usageWriter, null);
-
-        for (Entry<String, Object> subCommand : subCommands.entrySet()) {
-            usageWriter.append(subCommand.getKey());
-            usageWriter.append('\n');
-
-            CmdLineParser subParser = new CmdLineParser(subCommand.getValue());
-            subParser.printUsage(usageWriter, null);
-            usageWriter.append('\n');
-        }
-
-        String usage = usageWriter.toString();
-        logger.error("\n{}", usage);
+    public static void main(String[] args) throws Exception {
+        new CommandLine(new LureCommand()).execute(args);
     }
 
 }

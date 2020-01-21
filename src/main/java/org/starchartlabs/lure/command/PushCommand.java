@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
-import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +37,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.ParentCommand;
 
 /**
  * Command line sub-command that will push raw data to a web URL following patterns defined for GitHub webhook calls
@@ -45,6 +47,9 @@ import okhttp3.Response;
  * @author romeara
  * @since 0.1.0
  */
+@Command(
+        description = "Pushes a provided payload to an indicated web URL, mimicking the GitHub webook call pattern",
+        name = PushCommand.COMMAND_NAME, mixinStandardHelpOptions = true)
 public class PushCommand implements Runnable {
 
     public static final String COMMAND_NAME = "push";
@@ -63,21 +68,24 @@ public class PushCommand implements Runnable {
     /** Logger reference to output information to the application log files */
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Option(name = "-t", aliases = { "--target-url" }, required = true,
-            usage = "Specifies the server URL to POST the event to. Required")
+    @ParentCommand
+    private LureCommand lureCommand;
+
+    @Option(names = { "-t", "--target-url" }, required = true,
+            description = "Specifies the server URL to POST the event to. Required")
     private String targetUrl;
 
-    @Option(name = "-e", aliases = { "--event-name" }, required = true,
-            usage = "Specifies the GitHub event name to send as. Required")
+    @Option(names = { "-e", "--event-name" }, required = true,
+            description = "Specifies the GitHub event name to send as. Required")
     private String eventName;
 
     @Nullable
-    @Option(name = "-s", aliases = { "--secret" }, required = false,
-    usage = "Specifies the webhook secret to secure the event post with")
+    @Option(names = { "-s", "--secret" }, required = false,
+    description = "Specifies the webhook secret to secure the event post with")
     private String webhookSecret;
 
-    @Option(name = "-c", aliases = { "--content" }, required = true,
-            usage = "Specifies the file containing the event content to send. Required")
+    @Option(names = { "-c", "--content" }, required = true,
+            description = "Specifies the file containing the event content to send. Required")
     private File contentFile;
 
     @Override

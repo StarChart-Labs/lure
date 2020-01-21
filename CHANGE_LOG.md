@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Updated dependencies to latest bugfix release (gson, okhttp, commons-codec, slf4j, alloy)
+- (GH-16) Switched from args4j CLI parsing to picocli, as args4j no longer seems actively maintained
 
 ## [0.2.1]
 ### Changed

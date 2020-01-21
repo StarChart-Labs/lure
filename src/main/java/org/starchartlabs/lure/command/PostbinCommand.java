@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.starchartlabs.lure.model.postbin.PostbinCreateResponse;
@@ -39,6 +38,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.ParentCommand;
 
 /**
  * Command line sub-command that will pull requests from PostBin and push it to a web URL following patterns defined for
@@ -47,6 +49,9 @@ import okhttp3.ResponseBody;
  * @author romeara
  * @since 0.2.0
  */
+@Command(
+        description = "Pipes a payloads from postb.in to an indicated web URL, mimicking the GitHub webook call pattern",
+        name = PostbinCommand.COMMAND_NAME, mixinStandardHelpOptions = true)
 public class PostbinCommand implements Runnable {
 
     public static final String COMMAND_NAME = "postbin";
@@ -63,20 +68,23 @@ public class PostbinCommand implements Runnable {
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    @Option(name = "-t", aliases = { "--target-url" }, required = true,
-            usage = "Specifies the server URL to POST the event to. Required")
+    @ParentCommand
+    private LureCommand lureCommand;
+
+    @Option(names = { "-t", "--target-url" }, required = true,
+            description = "Specifies the server URL to POST the event to. Required")
     private String targetUrl;
 
-    @Option(name = "-b", aliases = { "--bin-id" }, required = false,
-            usage = "Specifies the Postbin bin ID to poll. If unspecified, a new bin is created")
+    @Option(names = { "-b", "--bin-id" }, required = false,
+            description = "Specifies the Postbin bin ID to poll. If unspecified, a new bin is created")
     private String binId;
 
-    @Option(name = "-p", aliases = { "--poll-frequency" }, required = false,
-            usage = "Specifies the frequency in seconds to poll Postbin for new requests at, must be greater than 0. Defaults to 10 seconds")
+    @Option(names = { "-p", "--poll-frequency" }, required = false,
+            description = "Specifies the frequency in seconds to poll Postbin for new requests at, must be greater than 0. Defaults to 10 seconds")
     private int pollFrequencySeconds = 10;
 
-    @Option(name = "-r", aliases = { "--postbin-root-url" }, required = false,
-            usage = "Specifies the root URL of Postbin to use. Defaults to https://postb.in/api")
+    @Option(names = { "-r", "--postbin-root-url" }, required = false,
+            description = "Specifies the root URL of Postbin to use. Defaults to https://postb.in/api")
     private String rootUrl = "https://postb.in/api";
 
     @Override
