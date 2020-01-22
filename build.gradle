@@ -1,34 +1,20 @@
-buildscript {
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.netflix.nebula:nebula-dependency-recommender:4.2.0'
-        classpath 'com.netflix.nebula:nebula-publishing-plugin:4.2.0'
-        classpath 'org.starchartlabs.flare:flare-operations-plugins:2.0.0'
-        classpath 'org.starchartlabs.flare:flare-publishing-plugins:1.0.0'
-        classpath 'us.kirchmeier:gradle-capsule-plugin:1.0.2'
-    }
-} 
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'jacoco'
+    id 'checkstyle'
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'jacoco'
-apply plugin: 'checkstyle'
-apply plugin: 'nebula.dependency-recommender'
-apply plugin: 'nebula.maven-resolved-dependencies'
-apply plugin: 'nebula.maven-base-publish'
-apply plugin: 'nebula.maven-dependencies'
-apply plugin: 'org.starchartlabs.flare.dependency-reporting'
-apply plugin: 'org.starchartlabs.flare.increase-test-logging'
-apply plugin: 'org.starchartlabs.flare.source-jars'
-apply plugin: 'us.kirchmeier.capsule'
+    id 'org.starchartlabs.flare.dependency-constraints' version '1.0.0'
+    id 'org.starchartlabs.flare.increased-test-logging' version '1.0.0'
+    id 'org.starchartlabs.flare.source-jars' version '1.0.0'
+    
+    id 'it.gianluz.capsule' version '1.0.3'
+}
 
 description = 'Command line interface for managing encrypted credential files'
 
-dependencyRecommendations {
-    propertiesFile file: file("${rootDir}/dependencies.properties")
+dependencyConstraints {
+    file file("${rootDir}/dependencies.properties")
 }
 
 //Always download sources, to allow debugging, and use Eclipse containers for greater portability
