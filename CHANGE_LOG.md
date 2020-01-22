@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.3.0]
 ### Changed
 - Updated dependencies to latest bugfix release (gson, okhttp, commons-codec, slf4j, alloy)
 - (GH-16) Switched from args4j CLI parsing to picocli, as args4j no longer seems actively maintained
