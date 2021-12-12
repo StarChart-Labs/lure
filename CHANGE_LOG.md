@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Updated com.google.code.gson:gson from 2.8.6 to 2.8.9
+- Updated com.squareup.okhttp3:mockwebserver from 3.14.1 to 4.9.3
+- Updated com.squareup.okhttp3:okhttp from 3.14.1 to 4.9.3
+- Updated commons-codec:commons-codec from 1.13 to 1.15
+- Updated info.picocli:picocli from 4.1.4 to 4.6.2
+- Updated org.slf4j:slf4j-api from 1.7.29 to 1.7.32
+- Updated org.slf4j:slf4j-simple from 1.7.29 to 1.7.32
+- Updated org.starchartlabs.alloy:alloy-core from 0.5.0 to 1.0.2
+- UPdated org.testng:testng from 6.14.3 to 7.4.0
 
 ## [0.3.0]
 ### Changed
