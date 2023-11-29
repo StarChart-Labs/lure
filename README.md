@@ -1,6 +1,6 @@
 # Lure
 
-![GitHub Actions](https://github.com/StarChart-Labs/lure/workflows/Java%20CI/badge.svg?branch=master) [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/StarChart-Labs/lure/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/StarChart-Labs/lure/branches/master) [![Changelog validated by Chronicler](https://chronicler.starchartlabs.org/images/changelog-chronicler-success.png)](https://chronicler.starchartlabs.org/)
+This project is ARCHIVED, as native webhook testing functionality has been [added to the GitHub CLI](https://docs.github.com/en/webhooks/testing-and-troubleshooting-webhooks/using-the-github-cli-to-forward-webhooks-for-testing). Users should switch to the native GitHub-provided solution. Thank you for trying our project!
 
 Command line utility for generating mock GitHub webhook test messages
 
